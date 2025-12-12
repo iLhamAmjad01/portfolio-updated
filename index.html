@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="netlify" content="true">
+    <title>Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --accent: #7c3aed;
+            --accent-light: #ede9fe;
+            --bg: #fff;
+            --text: #22223b;
+            --border: #e5e7eb;
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Poppins', Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 2.5px solid var(--accent);
+            box-shadow: 0 4px 24px 0 rgba(124, 58, 237, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            height: 72px;
+            backdrop-filter: blur(12px);
+            transition: background 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .left {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--accent);
+            gap: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #ede9fe;
+            user-select: none;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2.5px solid var(--accent);
+            object-fit: cover;
+            box-shadow: 0 2px 12px 0 rgba(124, 58, 237, 0.13);
+            transition: transform 0.5s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
+        }
+
+        .logo-img:hover {
+            transform: rotate(12deg) scale(1.12);
+            box-shadow: 0 6px 24px 0 rgba(124, 58, 237, 0.18);
+            border-color: #fff;
+            background: var(--accent-light);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: border 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), #fff 60%, var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            transform-origin: right;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1201;
+            margin-left: auto;
+            margin-right: 0;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            background: var(--accent);
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100vw;
+            width: 80vw;
+            max-width: 340px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 24px 0 rgba(124, 58, 237, 0.10);
+            z-index: 1200;
+            transition: right 0.35s cubic-bezier(.77, 0, .18, 1);
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            border-radius: 16px 0 0 16px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .mobile-nav.active {
+            display: block;
+            right: 0;
+        }
+
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            touch-action: none;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 2.5rem 0 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .mobile-nav ul li a {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .mobile-nav ul li a:hover,
+        .mobile-nav ul li a.active {
+            color: var(--text);
+        }
+
+        .close-btn {
+            display: block;
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            font-size: 2.2rem;
+            color: var(--accent);
+            cursor: pointer;
+            z-index: 1202;
+            line-height: 1;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #5b21b6;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .firstSection {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            margin: 3rem 0 2rem 0;
+        }
+
+        .leftSection {
+            flex: 1 1 320px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .leftSection .purple {
+            color: var(--accent);
+        }
+
+        .buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.6rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover,
+        .btn:focus {
+            background: #fff;
+            color: var(--accent);
+            outline: none;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .rightSection {
+            flex: 1 1 320px;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .profile-card {
+            background: var(--accent-light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            width: 110px;
+            height: 150px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        .secondSection,
+        .about-section,
+        .services-section,
+        #projects,
+        .testimonials-section,
+        #contact {
+            margin-bottom: 3rem;
+        }
+
+        .secondSection h1,
+        .about-section h2,
+        .services-section h2,
+        #projects h1,
+        .testimonials-section h1,
+        #contact h1 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .box,
+        .services-grid,
+        .projects-grid,
+        .testimonials-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .vertical,
+        .service-card,
+        .project-card,
+        .testimonial-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            min-width: 250px;
+            max-width: 320px;
+            flex: 1 1 280px;
+            box-shadow: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .vertical:hover,
+        .service-card:hover,
+        .project-card:hover,
+        .testimonial-card:hover {
+            border: 1.5px solid var(--accent);
+            box-shadow: 0 2px 12px 0 rgba(124, 58, 237, 0.07);
+        }
+
+        .vertical-title h5,
+        .service-title,
+        .project-title,
+        .client-info h4 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .vertical-desc,
+        .service-description,
+        .project-desc,
+        .testimonial-text {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-top,
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .service-features,
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .service-features li,
+        .tech-tag {
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 8px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.95rem;
+            list-style: none;
+        }
+
+        .project-links a {
+            color: var(--accent);
+            text-decoration: underline;
+            margin-right: 1rem;
+            font-size: 0.98rem;
+        }
+
+        .about-container,
+        .projects-container,
+        .testimonials-container,
+        .contact-container {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .skills .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .skill-item span {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .progress-bar {
+            background: var(--accent-light);
+            border-radius: 6px;
+            height: 8px;
+            margin-top: 0.3rem;
+            width: 100%;
+        }
+
+        .progress {
+            background: var(--accent);
+            height: 100%;
+            border-radius: 6px;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .client-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-light);
+        }
+
+        .rating i {
+            color: #fbbf24;
+            margin-right: 2px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            background: #f9fafb;
+            color: var(--text);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Remove default input styling on mobile for better usability */
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            min-height: 44px;
+        }
+
+        .contact-form button:hover {
+            background: #fff;
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            color: var(--accent);
+            background: var(--accent-light);
+            border-radius: var(--radius);
+            padding: 0.7rem 1.2rem;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .footer {
+            background: linear-gradient(90deg, #ede9fe 0%, #fff 100%);
+            border-top: 3px solid var(--accent);
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            justify-content: space-between;
+            color: #555;
+            font-size: 1rem;
+            box-shadow: 0 -4px 32px 0 rgba(124, 58, 237, 0.07);
+            border-radius: var(--radius) var(--radius) 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            left: -80px;
+            top: -80px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        .footer>div {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer h3,
+        .footer h4 {
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #ede9fe;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.4rem;
+            padding-left: 1.0rem;
+            position: relative;
+        }
+
+        .footer ul li:before {
+            content: '•';
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.1em;
+            top: 0;
+        }
+
+        .footer ul li a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .footer-first {
+            flex: 2 1 220px;
+            min-width: 180px;
+        }
+
+        .footer-second,
+        .footer-third,
+        .footer-fourth {
+            flex: 1 1 160px;
+            min-width: 140px;
+        }
+
+        .footer-rights {
+            width: 100%;
+            text-align: center;
+            margin-top: 2rem;
+            color: #aaa;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            border-top: 1px solid var(--accent-light);
+            padding-top: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.03) inset;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex !important;
+            }
+
+            .firstSection {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .leftSection {
+                flex: 1 1 auto;
+                font-size: 1.8rem;
+            }
+
+            .rightSection {
+                flex: 1 1 auto;
+                width: 100%;
+            }
+
+            .buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .button {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            .about-section,
+            .services-section,
+            .about-container,
+            .projects-container,
+            .testimonials-container,
+            .contact-container {
+                padding: 1.5rem;
+            }
+
+            .secondSection h1,
+            .about-section h2,
+            .services-section h2,
+            #projects h1,
+            .testimonials-section h1,
+            #contact h1 {
+                font-size: 1.6rem;
+            }
+
+            .vertical,
+            .service-card,
+            .testimonial-card {
+                max-width: 100%;
+                min-width: 250px;
+            }
+
+            .box {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .services-grid {
+                gap: 1rem;
+            }
+
+            .projects-grid {
+                gap: 1.2rem 0.5rem;
+            }
+
+            .project-card {
+                width: 100%;
+                min-width: 0;
+                max-width: 98vw;
+                height: 430px;
+            }
+
+            .mobile-nav {
+                width: 85vw;
+                max-width: 280px;
+            }
+
+            .mobile-nav ul {
+                margin: 2rem 0 0 0;
+            }
+
+            .mobile-nav ul li a {
+                font-size: 1rem;
+                gap: 0.5rem;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.2rem 2.2rem;
+            justify-content: center;
+            align-items: stretch;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: #fff;
+            border: 1.5px solid var(--accent-light);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+            width: 340px;
+            min-width: 280px;
+            max-width: 340px;
+            height: 430px;
+            box-shadow: 0 4px 24px 0 rgba(124, 58, 237, 0.07);
+            transition: border 0.2s, box-shadow 0.2s, transform 0.18s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            overflow: hidden;
+            position: relative;
+            background-image: linear-gradient(120deg, #ede9fe 0%, #fff 100%);
+        }
+
+        .project-card:hover {
+            border: 2px solid var(--accent);
+            box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.13);
+            transform: translateY(-6px) scale(1.025);
+            z-index: 2;
+        }
+
+        .project-image {
+            width: 100%;
+            max-width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: block;
+            box-shadow: 0 2px 12px 0 rgba(124, 58, 237, 0.06);
+            background: #f3f0ff;
+        }
+
+        .project-info {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-width: 0;
+        }
+
+        .project-title {
+            color: var(--accent);
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .project-desc {
+            color: #3b3663;
+            font-size: 1.02rem;
+            margin-bottom: 0.7rem;
+            background: rgba(124, 58, 237, 0.03);
+            border-radius: 8px;
+            padding: 0.6rem 0.8rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .tech-tag {
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 8px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .project-links {
+            margin-top: auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: var(--accent);
+            text-decoration: underline;
+            font-size: 0.98rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            border-radius: 6px;
+            padding: 0.2rem 0.7rem;
+            background: transparent;
+        }
+
+        .project-links a:hover {
+            color: #fff;
+            background: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .projects-grid {
+                gap: 1.2rem 0.5rem;
+            }
+
+            .project-card {
+                width: 100%;
+                min-width: 0;
+                max-width: 98vw;
+                height: 430px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 0 0.8rem;
+            }
+
+            .left {
+                font-size: 1rem;
+                gap: 8px;
+                letter-spacing: 0.5px;
+            }
+
+            .logo-img {
+                width: 36px;
+                height: 36px;
+            }
+
+            main {
+                padding: 1.5rem 0.8rem;
+            }
+
+            .firstSection {
+                margin: 1.5rem 0 1rem 0;
+            }
+
+            .leftSection {
+                font-size: 1.5rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .project-card {
+                padding: 1rem 0.5rem 1rem 0.5rem;
+                height: auto;
+                min-width: 0;
+                max-width: calc(100vw - 1.6rem);
+                width: 100%;
+            }
+
+            .project-title {
+                font-size: 1.1rem;
+            }
+
+            .project-desc {
+                font-size: 0.95rem;
+            }
+
+            .projects-grid {
+                gap: 1rem 0;
+                padding: 0;
+            }
+
+            .tech-tag {
+                font-size: 0.85rem;
+                padding: 0.15rem 0.5rem;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-first,
+            .footer-second,
+            .footer-third,
+            .footer-fourth {
+                flex: 1 1 100%;
+                min-width: auto;
+                text-align: center;
+            }
+
+            footer h3 {
+                font-size: 1.1rem;
+            }
+
+            footer a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            nav {
+                height: 64px;
+                padding: 0 0.5rem;
+            }
+
+            .left {
+                font-size: 0.9rem;
+            }
+
+            .logo-img {
+                width: 32px;
+                height: 32px;
+            }
+
+            main {
+                padding: 1rem 0.5rem;
+            }
+
+            .leftSection {
+                font-size: 1.3rem;
+            }
+
+            .button {
+                padding: 0.7rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .firstSection {
+                gap: 1rem;
+            }
+
+            .project-card {
+                padding: 0.8rem 0.4rem;
+                max-width: calc(100vw - 1rem);
+            }
+
+            .project-image {
+                height: 120px;
+                margin-bottom: 0.7rem;
+            }
+
+            .project-title {
+                font-size: 1rem;
+            }
+
+            .project-desc {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .project-tech {
+                gap: 0.3rem;
+            }
+
+            .project-links {
+                gap: 0.5rem;
+            }
+
+            .project-links a {
+                font-size: 0.85rem;
+                padding: 0.15rem 0.5rem;
+            }
+
+            footer h3 {
+                font-size: 1rem;
+            }
+
+            footer a {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .left {
+                font-size: 0.8rem;
+            }
+
+            .logo-img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .leftSection {
+                font-size: 1.1rem;
+            }
+
+            .button {
+                padding: 0.6rem 0.7rem;
+                font-size: 0.8rem;
+            }
+
+            .project-card {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+    <!-- Add EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Add Typed.js -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <!-- Update EmailJS SDK with correct keys -->
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("E4bHBpIgbzB0dlatN");
+        })();
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="left">
+                <img src="ilham logo.jpg" alt="Logo" class="logo-img">
+                ILHAM'S PORTFOLIO
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Open navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="right">
+                <ul>
+                    <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+                    <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
+                    <li><a href="#services"><i class="fas fa-cog"></i>Services</a></li>
+                    <li><a href="#projects"><i class="fas fa-code"></i>Projects</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
+                </ul>
+            </div>
+            <!-- Mobile sidebar navigation -->
+            <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation">
+                <ul>
+                    <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+                    <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
+                    <li><a href="#services"><i class="fas fa-cog"></i>Services</a></li>
+                    <li><a href="#projects"><i class="fas fa-code"></i>Projects</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
+                </ul>
+            </nav>
+        </nav>
+    </header>
+    <main>
+        <section id="home" class="firstSection">
+            <div class="leftSection">
+                Hi, My name is <span class="purple">ILHAM</span>
+                <div>And I am passionate</div>
+                <div><span id="typed-text" class="purple"></span></div>
+                <div class="buttons">
+                    <button class="btn" onclick="downloadResume()">
+                        <i class="fas fa-download"></i>
+                        Download Resume
+                    </button>
+                    <button class="btn" onclick="visitGithub()">
+                        <i class="fab fa-github"></i>
+                        Visit Github
+                    </button>
+                </div>
+            </div>
+            <div class="rightSection">
+                <div class="profile-card">
+                    <img src="p1.png" alt="Developer Image 1">
+                </div>
+                <div class="profile-card">
+                    <img src="p2.jpg" alt="Developer Image 2">
+                </div>
+                <div class="profile-card">
+                    <img src="p3.jpg" alt="Developer Image 3">
+                </div>
+            </div>
+        </section>
+        <hr>
+        <section id="about" class="secondSection">
+            <span class="text-gray">What I Have Done So Far</span>
+            <h1>Work Experience</h1>
+            <div class="box">
+                <div class="vertical">
+                    <img class="image-top" src="ht5.png" alt="HTML">
+                    <div class="vertical-title">
+                        <h5>HTML Developer (2023-2025)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Created semantic HTML structures and accessible web interfaces.
+                    </div>
+                </div>
+                <div class="vertical">
+                    <img class="image-top" src="download.png" alt="Node.js">
+                    <div class="vertical-title">
+                        <h5>Node.js Developer (2024-2025)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Built RESTful APIs and server-side applications with Express.
+                    </div>
+                </div>
+                <div class="vertical">
+                    <img class="image-top" src="react.png" alt="React">
+                    <div class="vertical-title">
+                        <h5>React Developer (2023-2024)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Developed component-based UIs with React hooks and Redux.
+                    </div>
+                </div>
+                <div class="vertical">
+                    <img class="image-top" src="ui.png" alt="UI/UX">
+                    <div class="vertical-title">
+                        <h5>UI/UX Designer (2022-2023)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Designed intuitive user interfaces and wireframes.
+                    </div>
+                </div>
+                <div class="vertical">
+                    <img class="image-top" src="improvement.png" alt="Web Design">
+                    <div class="vertical-title">
+                        <h5>Web Designer (2024-2025)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Designed intuitive user interfaces and wireframes.
+                    </div>
+                </div>
+                <div class="vertical">
+                    <img class="image-top" src="dev.bg.png" alt="Web Development">
+                    <div class="vertical-title">
+                        <h5>Web Developer (2022-2023)</h5>
+                    </div>
+                    <div class="vertical-desc">
+                        Designed intuitive user interfaces and wireframes.
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="about-section">
+            <img src="about-avatar.jpg" alt="About Avatar" class="about-avatar" style="border: 4px solid #fff; box-shadow: 0 6px 32px 0 rgba(124,58,237,0.18); background: var(--accent-light); object-fit: cover; transition: transform 0.4s; width: 120px; height: 120px; position: absolute; left: -70px; top: 40px; border-radius: 50%; z-index: 2;">
+            <div class="about-container">
+                <div class="about-content">
+                    <h2>About Me</h2>
+                    <p>I am a passionate Full Stack Developer with expertise in modern web technologies.
+                        With a strong foundation in both front-end and back-end development, I create
+                        seamless, responsive, and user-friendly web applications.</p>
+                    <div class="skills">
+                        <h3>My Skills</h3>
+                        <div class="skill-list">
+                            <div class="skill-item">
+                                <span>HTML/CSS</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>JavaScript</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>React.js</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>Node.js</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="services" class="services-section">
+            <div class="about-container">
+                <div class="about-content">
+                    <h2>My Services</h2>
+                    <p>I offer a comprehensive range of web development and design services tailored to meet your
+                        specific needs. Each service is delivered with attention to detail and a commitment to
+                        excellence.</p>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <i class="fas fa-code service-icon"></i>
+                            <h3 class="service-title">Web Development</h3>
+                            <p class="service-description">Full-stack web development with modern technologies and best
+                                practices.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i>Responsive Design</li>
+                                <li><i class="fas fa-check-circle"></i>SEO Optimization</li>
+                                <li><i class="fas fa-check-circle"></i>Performance Focused</li>
+                            </ul>
+                        </div>
+                        <div class="service-card">
+                            <i class="fas fa-paint-brush service-icon"></i>
+                            <h3 class="service-title">UI/UX Design</h3>
+                            <p class="service-description">Creative and intuitive user interface designs that enhance
+                                user experience.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i>Modern UI Design</li>
+                                <li><i class="fas fa-check-circle"></i>User Experience</li>
+                                <li><i class="fas fa-check-circle"></i>Prototyping</li>
+                            </ul>
+                        </div>
+                        <div class="service-card">
+                            <i class="fas fa-mobile-alt service-icon"></i>
+                            <h3 class="service-title">Mobile Development</h3>
+                            <p class="service-description">Cross-platform mobile app development for iOS and Android.
+                            </p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i>Native Apps</li>
+                                <li><i class="fas fa-check-circle"></i>Hybrid Solutions</li>
+                                <li><i class="fas fa-check-circle"></i>App Optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="projects">
+            <h1 style="text-align: center; padding-top: 50px;">My Projects</h1>
+            <div class="projects-container">
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <img src="spotify.png" class="project-image" alt="Spotify Clone">
+                        <div class="project-info">
+                            <h3 class="project-title">Spotify Clone</h3>
+                            <p class="project-desc">A feature-rich music streaming platform clone with modern UI and
+                                audio playback functionality.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Spotify API</span>
+                                <span class="tech-tag">CSS3</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="spotifyclone.png" target="_blank">Live Demo</a>
+                                <a href="#" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="blog.png" class="project-image" alt="Blog Platform">
+                        <div class="project-info">
+                            <h3 class="project-title">Personal Blog Platform</h3>
+                            <p class="project-desc">A full-stack blogging platform with CMS, user authentication, and
+                                markdown support.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">MongoDB</span>
+                                <span class="tech-tag">Express</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="blog.png" target="_blank">Live Demo</a>
+                                <a href="#" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="herbal-medic-nature-leaves-logo-leaf-care-logo-healthy-herbal-for-your-healthy-logo-design-template-free-vector.jpg"
+                            class="project-image" alt="Herbal Store">
+                        <div class="project-info">
+                            <h3 class="project-title">Herbal Store</h3>
+                            <p class="project-desc">An e-commerce platform for herbal products with shopping cart and
+                                payment integration.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Redux</span>
+                                <span class="tech-tag">Stripe</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="herbalstore.png.png" target="_blank">Live Demo</a>
+                                <a href="#" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="testimonials-section">
+            <h1 style="text-align: center; padding-top: 50px;">Client Testimonials</h1>
+            <div class="testimonials-container">
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client 1"
+                                class="client-image">
+                            <div class="client-info">
+                                <h4>John Smith</h4>
+                                <p>CEO, Tech Solutions</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Ilham delivered an exceptional website that exceeded our
+                            expectations. His attention to detail and technical expertise are impressive."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client 2"
+                                class="client-image">
+                            <div class="client-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>Founder, Digital Marketing</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Working with Ilham was a pleasure. He understood our requirements
+                            perfectly and delivered a modern, responsive website."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Client 3"
+                                class="client-image">
+                            <div class="client-info">
+                                <h4>Michael Brown</h4>
+                                <p>Product Manager, Startup</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Incredible work on our e-commerce platform. The site is fast,
+                            user-friendly, and exactly what we needed."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <h1 style="text-align: center; padding-top: 50px;">Contact Me</h1>
+            <div class="contact-container">
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" rows="6" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+                <div class="social-links">
+                    <a href="https://wa.me/923449832866" target="_blank" class="social-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="mailto:ilhamamjad2211@gmail.com" class="social-btn email">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                    <a href="https://linkedin.com/in/yourusername" target="_blank" class="social-btn linkedin">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://github.com/iLhamAmjad01" target="_blank" class="social-btn github">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="footer-first">
+                <h3>ILHAM'S Developer Portfolio</h3>
+                <p style="margin-top: 10px; color: #aaa;">Full Stack Developer</p>
+            </div>
+            <div class="footer-second">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                </ul>
+            </div>
+            <div class="footer-third">
+                <h4>Services</h4>
+                <ul>
+                    <li>Web Development</li>
+                    <li>UI/UX Design</li>
+                    <li>App Development</li>
+                    <li>Consultation</li>
+                </ul>
+            </div>
+            <div class="footer-fourth">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li>Email: ilhamamjad2211@gmail.com</li>
+                    <li>Phone: +923449832866</li>
+                    <li>Location : ISLAMABAD PAKISTAN ,BAHRIA TOWN PHASE 7..</li>
+                </ul>
+            </div>
+            <div class="footer-rights">
+                Copyright © 2023 ilhamsportfolio.com | All Rights Reserved
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize EmailJS
+        (function () {
+            emailjs.init("E4bHBpIgbzB0dlatN");
+        })();
+
+        // Updated contact form submission with correct service and template IDs
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const templateParams = {
+                from_name: this.querySelector('input[type="text"]').value,
+                from_email: this.querySelector('input[type="email"]').value,
+                message: this.querySelector('textarea').value,
+                to_name: 'Ilham',
+                reply_to: this.querySelector('input[type="email"]').value
+            };
+
+            emailjs.send('service_317632c', 'template_zq8gizp', templateParams)
+                .then(() => {
+                    alert('Message sent successfully! I will get back to you soon.');
+                    this.reset();
+                })
+                .catch((error) => {
+                    alert('Failed to send message. Please try again or contact me directly.');
+                    console.error('EmailJS error:', error);
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
+        });
+
+        // Add typing animation
+        let typed = new Typed('#typed-text', {
+            strings: ['Web Developer', 'Graphics Designer', 'Web Designer'],
+            typeSpeed: 50,
+            backSpeed: 30,
+            backDelay: 2000,
+            loop: true,
+            showCursor: true,
+            cursorChar: '|',
+            autoInsertCss: true,
+            startDelay: 1000
+        });
+
+        // Add resume download functionality
+        function downloadResume() {
+            // Replace with your actual resume file name and path
+            const resumeUrl = './ilham updated cv.pdf';
+            const link = document.createElement('a');
+            link.href = resumeUrl;
+            link.download = 'ilham_updated_cv.pdf'; // Name that will appear when downloading
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Add GitHub visit functionality
+        function visitGithub() {
+            window.open('https://github.com/iLhamAmjad01', '_blank');
+        }
+
+        // Add desktop view toggle functionality
+        function toggleDesktopView() {
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport.content.includes('width=device-width')) {
+                viewport.content = 'width=1024';
+                localStorage.setItem('viewMode', 'desktop');
+            } else {
+                viewport.content = 'width=device-width, initial-scale=1.0';
+                localStorage.setItem('viewMode', 'mobile');
+            }
+        }
+
+        // Check saved view preference
+        if (localStorage.getItem('viewMode') === 'desktop') {
+            document.querySelector('meta[name="viewport"]').content = 'width=1024';
+        }
+
+        // Hamburger menu toggle for mobile sidebar
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+        hamburger.addEventListener('click', function () {
+            const isOpen = hamburger.classList.toggle('open');
+            mobileNav.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            // Prevent background scroll and zoom when sidebar is open
+            if (isOpen) {
+                document.body.classList.add('menu-open');
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close sidebar when a link is clicked (mobile only)
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', function () {
+                mobileNav.classList.remove('active');
+                hamburger.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            });
+        });
+    </script>
+</body>
+
+</html>
