@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Manage Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{ --bg:#050709; --text:#F8FAFC; --muted:rgba(248,250,252,0.6); --indigo:#6366F1; }
+    body{ font-family:Inter,system-ui,sans-serif; background:#0b0d11; color:var(--text); padding:32px; }
+    .wrap{ max-width:960px; margin:0 auto; }
+    h1{ margin-bottom:6px; }
+    form{ display:grid; grid-template-columns:1fr 320px; gap:16px; align-items:start; }
+    .fields{ display:grid; gap:10px; }
+    label{ display:block; font-size:.85rem; color:var(--muted); margin-bottom:6px; }
+    input[type="text"], input[type="url"], textarea{ width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#071018; color:var(--text); }
+    textarea{ min-height:120px; resize:vertical; }
+    .controls{ display:flex; gap:8px; margin-top:8px; }
+    button{ padding:10px 12px; border-radius:8px; background:var(--indigo); color:#fff; border:none; cursor:pointer; }
+    .preview{ background:#071018; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); }
+    .proj-list{ margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+    .proj-item{ display:flex; gap:12px; align-items:center; background:#071018; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
+    .proj-item img{ width:64px; height:64px; object-fit:cover; border-radius:6px; }
+    .proj-item .meta{ flex:1; }
+    .small{ font-size:.85rem; color:var(--muted); }
+    .danger{ background:#e11d48; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Admin — Manage Projects</h1>
+    <p class="small">Add, preview and remove featured projects. Data is saved to browser <strong>localStorage</strong>.</p>
+    <form id="adminForm">
+      <div class="fields">
+        <div>
+          <label for="title">Title</label>
+          <input id="title" type="text" placeholder="Project title" required>
+        </div>
+        <div>
+          <label for="tag">Tag</label>
+          <input id="tag" type="text" placeholder="e.g. E-Commerce">
+        </div>
+        <div>
+          <label for="desc">Description</label>
+          <textarea id="desc" placeholder="Short project description"></textarea>
+        </div>
+        <div>
+          <label for="live">Live URL</label>
+          <input id="live" type="url" placeholder="https://...">
+        </div>
+        <div>
+          <label for="code">Code URL</label>
+          <input id="code" type="url" placeholder="https://github.com/...">
+        </div>
+        <div>
+          <label for="chips">Chips (comma-separated)</label>
+          <input id="chips" type="text" placeholder="React,Stripe,CSS">
+        </div>
+        <div>
+          <label for="imgurl">Image URL (optional)</label>
+          <input id="imgurl" type="url" placeholder="https://...">
+        </div>
+        <div>
+          <label for="imgfile">Or upload image (optional)</label>
+          <input id="imgfile" type="file" accept="image/*">
+        </div>
+        <div class="controls">
+          <button type="button" id="addBtn">Add Project</button>
+          <button type="button" id="clearBtn" class="danger">Clear All</button>
+        </div>
+      </div>
+      <div class="preview">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <img id="preview" src="" alt="" style="width:120px;height:120px;object-fit:cover;border-radius:8px;background:linear-gradient(135deg,#6366F1,#8B5CF6);">
+          <div>
+            <div id="previewTitle" style="font-weight:700;font-size:1rem;">No preview</div>
+            <div id="previewTag" class="small">Tag</div>
+          </div>
+        </div>
+        <div id="previewDesc" class="small" style="margin-top:12px;">Description</div>
+        <div class="proj-list" id="projList"></div>
+      </div>
+    </form>
+
+    <p class="small" style="margin-top:12px;">Open <a href="index2.html">index2.html</a> in the same browser to see the updated featured projects.</p>
+  </div>
+
+  <script>
+    const PROJECTS_KEY = 'portfolio_projects_v1';
+    let projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+    let selectedDataUrl = '';
+
+    const el = id => document.getElementById(id);
+
+    function readFileAsDataURL(file){
+      return new Promise((res,rej)=>{
+        const reader = new FileReader();
+        reader.onload = ()=>res(reader.result);
+        reader.onerror = rej;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderAdminList(){
+      const list = el('projList');
+      list.innerHTML = '';
+      if(!projects.length){ list.innerHTML = '<div class="small">No projects yet.</div>'; return; }
+      projects.forEach(p=>{
+        const item = document.createElement('div');
+        item.className = 'proj-item';
+        item.innerHTML = `<img src="${p.img || ''}" alt="${p.title||''}" onerror="this.src='';this.style.background='linear-gradient(135deg,#6366F1,#8B5CF6)';">
+          <div class="meta"><strong>${p.title}</strong><div class="small">${p.tag || ''}</div></div>
+          <div><button data-id="${p.id}" class="del">Delete</button></div>`;
+        list.appendChild(item);
+      });
+      document.querySelectorAll('.del').forEach(btn=>btn.addEventListener('click', e=>{
+        const id = e.currentTarget.dataset.id;
+        projects = projects.filter(p=>p.id!==id);
+        localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+        renderAdminList();
+        window.dispatchEvent(new Event('storage'));
+      }));
+    }
+
+    el('imgfile').addEventListener('change', async (e)=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      selectedDataUrl = await readFileAsDataURL(f);
+      el('preview').src = selectedDataUrl;
+    });
+
+    ['title','tag','desc','chips','imgurl'].forEach(id=>{
+      el(id).addEventListener('input', ()=>{
+        el('previewTitle').textContent = el('title').value || 'No preview';
+        el('previewTag').textContent = el('tag').value || '';
+        el('previewDesc').textContent = el('desc').value || '';
+        if(el('imgurl').value && !selectedDataUrl){
+          el('preview').src = el('imgurl').value;
+        }
+      });
+    });
+
+    el('addBtn').addEventListener('click', async ()=>{
+      const title = el('title').value.trim();
+      if(!title){ alert('Please provide a title'); return; }
+      const img = selectedDataUrl || el('imgurl').value.trim() || '';
+      const project = {
+        id: Date.now().toString(),
+        title,
+        tag: el('tag').value.trim(),
+        desc: el('desc').value.trim(),
+        live: el('live').value.trim(),
+        code: el('code').value.trim(),
+        chips: el('chips').value.split(',').map(s=>s.trim()).filter(Boolean),
+        img
+      };
+      projects.unshift(project);
+      localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+      el('title').value = el('tag').value = el('desc').value = el('live').value = el('code').value = el('chips').value = el('imgurl').value = '';
+      el('imgfile').value = '';
+      selectedDataUrl = '';
+      el('preview').src = '';
+      renderAdminList();
+      alert('Project added — open index2.html to view it.');
+      try{ localStorage.setItem('__portfolio_sync_ts', Date.now().toString()); }catch(e){}
+    });
+
+    el('clearBtn').addEventListener('click', ()=>{
+      if(!confirm('Clear all projects? This cannot be undone.')) return;
+      projects = [];
+      localStorage.removeItem(PROJECTS_KEY);
+      renderAdminList();
+      alert('All projects cleared.');
+      try{ localStorage.setItem('__portfolio_sync_ts', Date.now().toString()); }catch(e){}
+    });
+
+    renderAdminList();
+  </script>
+</body>
+</html>
